@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/")
+@RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class postController {
 
     @Autowired
@@ -17,7 +18,7 @@ public class postController {
     @Autowired
     searchRepository searchRepository;
 
-    @GetMapping("/posts")
+    @GetMapping("/allPosts")
     public List<post> getAllpost(){
         List<post> send = postRepo.findAll();
         return send;
@@ -33,7 +34,7 @@ public class postController {
         return "Post Added";
     }
 
-    @GetMapping("/search/{text}")
+    @GetMapping("/posts/{text}")
     public List<post> searchPost(@PathVariable String text){
        List<post> send =  searchRepository.findByText(text);
        if(send.size() == 0){
