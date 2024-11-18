@@ -2,11 +2,9 @@ package com.Projects.jobPortal.collections;
 
 import com.Projects.jobPortal.entity.post;
 import com.Projects.jobPortal.repository.postRepository;
+import com.Projects.jobPortal.repository.searchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,6 +13,9 @@ public class postController {
 
     @Autowired
     postRepository postRepo;
+
+    @Autowired
+    searchRepository searchRepository;
 
     @GetMapping("/posts")
     public List<post> getAllpost(){
@@ -30,6 +31,15 @@ public class postController {
     public String addPost(@RequestBody post post)    {
         postRepo.save(post);
         return "Post Added";
+    }
+
+    @GetMapping("/search/{text}")
+    public List<post> searchPost(@PathVariable String text){
+       List<post> send =  searchRepository.findByText(text);
+       if(send.size() == 0){
+           return postRepo.findAll();
+       }
+         return send;
     }
 
 }
