@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #4faaf5, #56e39f);
+            font-family: 'Arial', sans-serif;
+        }
+
+        a {
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        a:hover {
+            transform: scale(1.05);
+        }
+
+        #clock {
+            position: absolute;
+            top: 10px;
+            right: 10px; /* Changed from left to right */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<!-- Clock Display -->
+<div id="clock">Loading time...</div>
+
+<!-- Job Portal Content -->
+<div class="bg-white shadow-lg rounded-lg p-10 text-center max-w-md">
+    <h1 class="text-3xl font-bold text-blue-600 mb-5">Job Portal</h1>
+    <p class="text-gray-600 mb-10">Connect the right jobs to the right people.</p>
+    <div class="space-y-4">
+        <!-- Post a Job Button -->
+        <a href="http://localhost:8080/post" class="block bg-blue-500 text-white py-3 rounded-lg shadow-md hover:bg-blue-600">
+            Post a Job
+        </a>
+        <!-- Search for Jobs Button -->
+        <a href="http://localhost:8080/jobs" class="block bg-green-500 text-white py-3 rounded-lg shadow-md hover:bg-green-600">
+            Search for Jobs
+        </a>
+    </div>
+</div>
+
+<script>
+    // Function to update the clock
+    function updateClock() {
+        const clockElement = document.getElementById('clock');
+        const now = new Date();
+
+        // Get Indian Standard Time (IST)
+        const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const timeString = new Intl.DateTimeFormat('en-GB', options).format(now);
+
+        clockElement.textContent = `Indian Time: ${timeString}`;
+    }
+
+    // Update clock every second
+    setInterval(updateClock, 1000);
+
+    // Initialize clock immediately
+    updateClock();
+</script>
+</body>
+</html>

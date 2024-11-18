@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Job</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #4faaf5, #56e39f);
+            font-family: 'Arial', sans-serif;
+        }
+
+        a:hover {
+            transform: scale(1.05);
+        }
+
+        #jobPortalButton {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #4faaf5;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        #jobPortalButton:hover {
+            background-color: #3e91d4;
+        }
+
+        #clock {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<!-- JobPortal Button -->
+<a id="jobPortalButton" href="index.html">JobPortal</a>
+
+<!-- Clock Display -->
+<div id="clock">Loading time...</div>
+
+<!-- Post Job Form -->
+<div class="bg-white shadow-lg rounded-lg p-10 max-w-lg w-full">
+    <h1 class="text-2xl font-bold text-blue-600 mb-5 text-center">Post a Job</h1>
+    <form id="jobForm" class="space-y-4">
+        <div>
+            <label class="block text-gray-600 font-medium mb-2" for="profile">Profile</label>
+            <input type="text" name="profile" id="profile" class="w-full p-3 border rounded-md" required />
+        </div>
+        <div>
+            <label class="block text-gray-600 font-medium mb-2" for="desc">Description</label>
+            <textarea name="desc" id="desc" rows="4" class="w-full p-3 border rounded-md" required></textarea>
+        </div>
+        <div>
+            <label class="block text-gray-600 font-medium mb-2" for="exp">Experience</label>
+            <input type="text" name="exp" id="exp" class="w-full p-3 border rounded-md" required />
+        </div>
+        <div>
+            <label class="block text-gray-600 font-medium mb-2" for="techs">Technologies (comma separated)</label>
+            <input type="text" name="techs" id="techs" class="w-full p-3 border rounded-md" required />
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">
+            Submit
+        </button>
+    </form>
+</div>
+
+<script>
+    // Clock Function
+    function updateClock() {
+        const clockElement = document.getElementById('clock');
+        const now = new Date();
+        const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const timeString = new Intl.DateTimeFormat('en-GB', options).format(now);
+        clockElement.textContent = `Indian Time: ${timeString}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Handle form submission
+    document.getElementById('jobForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const techs = formData.get('techs').split(',').map(tech => tech.trim());
+        const data = {
+            profile: formData.get('profile'),
+            desc: formData.get('desc'),
+            exp: formData.get('exp'),
+            techs: techs
+        };
+
+        fetch('http://localhost:8080/post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                window.location.href = "http://localhost:8080/";
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+</body>
+</html>

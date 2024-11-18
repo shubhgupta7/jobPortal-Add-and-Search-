@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/jobPortal/jobPortal.iml" filepath="$PROJECT_DIR$/jobPortal/jobPortal.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/jobPortal-Add-and-Search-.iml" filepath="$PROJECT_DIR$/.idea/jobPortal-Add-and-Search-.iml" />
     </modules>
   </component>

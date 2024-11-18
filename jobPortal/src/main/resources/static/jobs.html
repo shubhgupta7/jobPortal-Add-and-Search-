@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Jobs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #4faaf5, #56e39f);
+            font-family: 'Arial', sans-serif;
+        }
+
+        a:hover {
+            transform: scale(1.05);
+        }
+
+        #jobPortalButton {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #4faaf5;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        #jobPortalButton:hover {
+            background-color: #3e91d4;
+        }
+
+        #clock {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<!-- JobPortal Button -->
+<a id="jobPortalButton" href="index.html">JobPortal</a>
+
+<!-- Clock Display -->
+<div id="clock">Loading time...</div>
+
+<!-- View Jobs -->
+<div class="max-w-4xl mx-auto p-10">
+    <h1 class="text-3xl font-bold text-blue-600 text-center mb-5">Search & View Jobs</h1>
+
+    <!-- Search Bar -->
+    <div class="flex mb-6">
+        <input type="text" id="search" placeholder="Search jobs..." class="flex-1 p-3 border rounded-l-lg" />
+        <button id="searchButton" class="bg-blue-500 text-white px-4 rounded-r-lg hover:bg-blue-600">Search</button>
+    </div>
+
+    <!-- Jobs List -->
+    <div id="jobsContainer" class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Dynamic Jobs List -->
+    </div>
+</div>
+
+<script>
+    // Clock Function
+    function updateClock() {
+        const clockElement = document.getElementById('clock');
+        const now = new Date();
+        const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const timeString = new Intl.DateTimeFormat('en-GB', options).format(now);
+        clockElement.textContent = `Indian Time: ${timeString}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Fetch All Jobs
+    async function fetchJobs() {
+        const response = await fetch('http://localhost:8080/allPosts');
+        const jobs = await response.json();
+        const jobsContainer = document.getElementById('jobsContainer');
+        jobsContainer.innerHTML = '';
+        jobs.forEach(job => {
+            const jobCard = `
+                    <div class="bg-white p-5 rounded-lg shadow-lg">
+                        <h2 class="font-bold text-lg">${job.profile}</h2>
+                        <p class="text-gray-600">${job.desc}</p>
+                        <p class="text-gray-500">Experience: ${job.exp}</p>
+                        <p class="text-gray-500">Technologies: ${job.techs.join(', ')}</p>
+                    </div>
+                `;
+            jobsContainer.innerHTML += jobCard;
+        });
+    }
+
+    // Search Jobs
+    document.getElementById('searchButton').addEventListener('click', async () => {
+        const query = document.getElementById('search').value;
+        const response = await fetch(`http://localhost:8080/posts/${query}`);
+        const jobs = await response.json();
+        const jobsContainer = document.getElementById('jobsContainer');
+        jobsContainer.innerHTML = '';
+        jobs.forEach(job => {
+            const jobCard = `
+                    <div class="bg-white p-5 rounded-lg shadow-lg">
+                        <h2 class="font-bold text-lg">${job.profile}</h2>
+                        <p class="text-gray-600">${job.desc}</p>
+                        <p class="text-gray-500">Experience: ${job.exp}</p>
+                        <p class="text-gray-500">Technologies: ${job.techs.join(', ')}</p>
+                    </div>
+                `;
+            jobsContainer.innerHTML += jobCard;
+        });
+    });
+
+    // Load All Jobs Initially
+    fetchJobs();
+</script>
+</body>
+</html>
+``
