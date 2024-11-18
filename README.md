@@ -1,17 +1,9 @@
-# jobPortal-Add-and-Search-
-Here is a basic structure for your `README.md` file for the job portal project:
-
 # Job Portal
 
-## Description
-This project is a job portal application that allows users to add and search for job postings. It is built using Java, Spring Boot, and MongoDB.
-
-## Features
-- Add new job postings
-- Retrieve all job postings
-- Get the total number of job postings
+This is a Spring Boot application for managing job posts. It provides endpoints to add, search, and retrieve job posts from a MongoDB database.
 
 ## Technologies Used
+
 - Java
 - Spring Boot
 - MongoDB
@@ -20,51 +12,86 @@ This project is a job portal application that allows users to add and search for
 ## Getting Started
 
 ### Prerequisites
+
 - Java 11 or higher
 - Maven
 - MongoDB
 
 ### Installation
+
 1. Clone the repository:
    ```sh
-   git clone https://github.com/shubhgupta7/jobPortal-Add-and-Search-.git
-   ```
-2. Navigate to the project directory:
-   ```sh
-   cd jobPortal-Add-and-Search-
-   ```
-3. Install the dependencies:
-   ```sh
-   mvn install
+   git clone https://github.com/shubhgupta7/jobPortal.git
+   cd jobPortal
    ```
 
-### Running the Application
-1. Start MongoDB:
-   ```sh
-   mongod
+2. Update the MongoDB connection string in `application.properties`:
+   ```ini
+   spring.data.mongodb.uri=mongodb+srv://<username>:<password>@<cluster-url>/?retryWrites=true&w=majority&appName=Cluster0
+   spring.data.mongodb.database=shubhgupta
    ```
-2. Run the Spring Boot application:
+
+3. Build the project using Maven:
+   ```sh
+   mvn clean install
+   ```
+
+4. Run the application:
    ```sh
    mvn spring-boot:run
    ```
 
-### API Endpoints
-- **GET /posts**: Retrieve all job postings
-- **GET /totalPost**: Get the total number of job postings
-- **POST /post**: Add a new job posting
+### Frontend
 
-### Example JSON for Adding a Job Post
+The frontend for this project can be accessed at [UISpringMongodb](https://github.com/navinreddy20/UISpringMongodb). Follow the instructions in the repository to start the frontend application.
+
+### CORS Error
+
+The CORS error has been resolved by allowing requests from `http://localhost:3000`.
+
+## API Endpoints
+
+### Get All Posts
+
+- **URL:** `/posts`
+- **Method:** `GET`
+- **Description:** Retrieves all job posts.
+- **Response:** List of job posts.
+
+### Get Total Post Count
+
+- **URL:** `/totalPost`
+- **Method:** `GET`
+- **Description:** Retrieves the total number of job posts.
+- **Response:** Integer count of job posts.
+
+### Add a Post
+
+- **URL:** `/post`
+- **Method:** `POST`
+- **Description:** Adds a new job post.
+- **Request Body:** JSON representation of a `post` object.
+- **Response:** Confirmation message.
+
+### Search Posts
+
+- **URL:** `/search/{text}`
+- **Method:** `GET`
+- **Description:** Searches for job posts containing the specified text.
+- **Path Variable:** `text` - The text to search for.
+- **Response:** List of job posts matching the search criteria.
+
+## Example `post` Object
+
 ```json
 {
   "profile": "Software Engineer",
-  "desc": "Responsible for developing and maintaining software applications.",
+  "desc": "Responsible for developing applications.",
   "exp": "3 years",
   "techs": ["Java", "Spring Boot", "MongoDB"]
 }
 ```
 
-## Contributing
-Contributions are welcome! Please fork the repository and submit a pull request.
-
 ## License
-This project is licensed under the MIT License.
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
